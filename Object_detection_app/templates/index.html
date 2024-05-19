@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture</title>
+</head>
+<body>
+    <h1>Camera Capture</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="start-camera">Start Camera</button>
+    <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const startButton = document.getElementById('start-camera');
+
+        startButton.onclick = function() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function(error) {
+                    console.error('Access to the camera was denied!', error);
+                });
+        };
+
+        video.addEventListener('click', function() {
+            canvas.style.display = 'block';
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // Here you can add code to process the image further, like sending it to a server
+        });
+    </script>
+</body>
+</html>
